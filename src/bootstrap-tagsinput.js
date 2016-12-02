@@ -28,7 +28,8 @@
     },
     trimValue: false,
     allowDuplicates: false,
-    triggerChange: true
+    triggerChange: true,
+    enableSideArrows: true //2016-12-02, estelar: configurable support of side arrows
   };
 
   /**
@@ -252,7 +253,7 @@
           //$tag.contents().filter(function() {
           //  return this.nodeType == 3;
           //})[0].nodeValue = htmlEncode(itemText);
-          $tag.contents().filter('[data-role="label"]')[0].text(htmlEncode(itemText));
+          $tag.contents().filter('[data-role="label"]').text(htmlEncode(itemText));
 
           if (self.isSelect) {
             var option = $('option', self.$element).filter(function() { return $(this).data('item') === item; });
@@ -440,6 +441,11 @@
 
           // LEFT ARROW
           case 37:
+            //2016-12-02, estelar: configurable support of side arrows
+            if (!self.options.enableSideArrows) {
+              break;
+            }
+
             // Try to move the input before the previous tag
             var $prevTag = $inputWrapper.prev();
             if ($input.val().length === 0 && $prevTag[0]) {
@@ -449,6 +455,11 @@
             break;
           // RIGHT ARROW
           case 39:
+            //2016-12-02, estelar: configurable support of side arrows
+            if (!self.options.enableSideArrows) {
+              break;
+            }
+
             // Try to move the input after the next tag
             var $nextTag = $inputWrapper.next();
             if ($input.val().length === 0 && $nextTag[0]) {
