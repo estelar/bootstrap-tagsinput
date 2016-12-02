@@ -140,7 +140,13 @@
 
       // add a tag element
 
-      var $tag = $('<span class="tag ' + htmlEncode(tagClass) + (itemTitle !== null ? ('" title="' + itemTitle) : '') + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');
+      //2016-12-01, estelar: Label of tag stored into separate HTML element
+      //var $tag = $('<span class="tag ' + htmlEncode(tagClass) + (itemTitle !== null ? ('" title="' + itemTitle) : '') + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');
+      var $tag = $(
+        '<span class="tag ' + htmlEncode(tagClass) + (itemTitle !== null ? ('" title="' + itemTitle) : '') + '">' +
+          '<span data-role="label">' + htmlEncode(itemText) + '</span>' +
+          '<span data-role="remove"></span>' +
+        '</span>');
       $tag.data('item', item);
       self.findInputWrapper().before($tag);
       $tag.after(' ');
@@ -247,9 +253,11 @@
           // Update tag's class and inner text
           $tag.attr('class', null);
           $tag.addClass('tag ' + htmlEncode(tagClass));
-          $tag.contents().filter(function() {
-            return this.nodeType == 3;
-          })[0].nodeValue = htmlEncode(itemText);
+          //2016-12-01, estelar: Label of tag stored into separate HTML element
+          //$tag.contents().filter(function() {
+          //  return this.nodeType == 3;
+          //})[0].nodeValue = htmlEncode(itemText);
+          $tag.contents().filter('[data-role="label"]')[0].text(htmlEncode(itemText));
 
           if (self.isSelect) {
             var option = $('option', self.$element).filter(function() { return $(this).data('item') === item; });
